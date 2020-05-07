@@ -11,10 +11,12 @@ RUN sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add -U tzdata && ln
 
 RUN apk add fontconfig && apk add --update ttf-dejavu && fc-cache --force
 
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ lrzsz && \
+RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv iotop tshark && \
+    apk add --no-cache busybox-extras gdb tcpdump tcpflow nload iperf bind-tools net-tools sysstat strace ltrace tree readline screen tmux vim unzip && \
+    apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ lrzsz && \
     # DEPENDENCY TO ALLOW USERS TO RUN crontab
     apk add --no-cache --update busybox-suid
-
+    
 RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
     echo /etc/apk/respositories && \
     apk update && apk upgrade &&\
@@ -41,3 +43,5 @@ RUN { \
     } > /usr/local/bin/docker-java-home \
     && chmod +x /usr/local/bin/docker-java-home
 RUN apk add --no-cache openjdk8 && [ "$JAVA_HOME" = "$(docker-java-home)" ]
+
+RUN curl -L https://alibaba.github.io/arthas/install.sh | sh
