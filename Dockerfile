@@ -44,4 +44,5 @@ RUN { \
     && chmod +x /usr/local/bin/docker-java-home
 RUN apk add --no-cache openjdk8 && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
-RUN curl -L https://alibaba.github.io/arthas/install.sh | sh
+RUN mkdir -p /usr/local/bin/ && cd /usr/local/bin/ && wget https://alibaba.github.io/arthas/arthas-boot.jar
+RUN printf '#!/bin/bash\njava -jar /usr/local/bin/arthas-boot.jar $1' > /usr/local/bin/arthas &&  chmod +x  /usr/local/bin/arthas
